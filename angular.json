@@ -17,19 +17,34 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/prestige",
+            "outputPath": "dist/prestige/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/styles.css"
+              "./src/styles.css",
+              "./src/assets/lib/flaticon/font/flaticon.css",
+              "./src/assets/lib/animate/animate.css",
+              "./src/assets/lib/owlcarousel/assets/owl.carousel.min.css",
+              "./src/assets/lib/lightbox/css/lightbox.min.css",
+              "./src/assets/lib/slick/slick-theme.css"
             ],
-            "scripts": []
+
+            "scripts": [
+              "./src/assets/lib/easing/easing.min.js",
+              "./src/assets/lib/wow/wow.min.js",
+              "./src/assets/lib/owlcarousel/owl.carousel.min.js",
+              "./src/assets/lib/isotope/isotope.pkgd.min.js",
+              "./src/assets/lib/lightbox/js/lightbox.min.js",
+              "./src/assets/lib/waypoints/waypoints.min.js",
+              "./src/assets/lib/counterup/counterup.min.js",
+              "./src/assets/mail/contact.js",
+              "./src/assets/mail/jqBootstrapValidation.min.js",
+              "./src/assets/lib/slick/slick.min.js",
+              "./src/assets/js/main.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -89,15 +104,66 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/prestige/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "prestige:build:development",
+              "serverTarget": "prestige:server:development"
+            },
+            "production": {
+              "browserTarget": "prestige:build:production",
+              "serverTarget": "prestige:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": ["/"]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "prestige:build:production",
+              "serverTarget": "prestige:server:production"
+            },
+            "development": {
+              "browserTarget": "prestige:build:development",
+              "serverTarget": "prestige:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
